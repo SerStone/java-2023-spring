@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+
 @RestControllerAdvice
 public class ExceptionController {
 
@@ -18,6 +22,24 @@ public class ExceptionController {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorDto.builder()
                         .messages(exception.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList())
+                        .build());
+    }
+
+    @ExceptionHandler({IOException.class})
+    public ResponseEntity<ErrorDto> handleError(IOException exception, WebRequest webRequest) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorDto.builder()
+                        .messages(Arrays.asList(exception.getMessage()))
+                        .build());
+    }
+
+    @ExceptionHandler({NoSuchElementException.class})
+    public ResponseEntity<ErrorDto> handleError(NoSuchElementException exception, WebRequest webRequest) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorDto.builder()
+                        .messages(Arrays.asList("Not Found!"))
                         .build());
     }
 }

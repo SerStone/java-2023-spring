@@ -7,9 +7,11 @@ import com.example.java2023spring.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -53,4 +55,11 @@ public class CarController {
     public ResponseEntity<List<CarDto>> getByProducer(@PathVariable String value) {
         return ResponseEntity.ok(this.carService.getByProducer(value));
     }
+    @SneakyThrows
+    @JsonView(View.level1.class)
+    @PostMapping("/{id}/photo")
+    public ResponseEntity<CarDto> uploadPhotoById(@PathVariable int id, MultipartFile photo) {
+        return ResponseEntity.ok(this.carService.uploadPhotoById(id, photo));
+    }
+
 }

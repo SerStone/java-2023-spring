@@ -6,11 +6,15 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CarDto {
     @JsonView(value = {View.level1.class})
     private int id;
@@ -29,4 +33,7 @@ public class CarDto {
     @NotBlank(message = "model required")
     @Size(min = 2, max = 20, message = "Min value of chars is {min} and max value is {max}")
     private String producer;
+
+    @JsonView(value = {View.level1.class})
+    private String photo;
 }
